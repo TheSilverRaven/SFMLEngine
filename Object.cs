@@ -6,7 +6,6 @@ namespace SilverRaven.SFML
 {
     public class Object
     {
-        
 #region static
 
         private static List<Object> objects; // all current objects
@@ -42,6 +41,14 @@ namespace SilverRaven.SFML
         protected static List<Object> GetAllObjects() => new (objects);
 
 #region global calls
+
+        /// <summary>
+        /// Returns the exact item passed into this method. 
+        /// Create new object instances like `Object.CreateInstance(new Player());`
+        /// This method soly exists to get rid of IDE warnings when creating an instance without storing it in a variable.
+        /// Using `Player p = new Player();` still works.
+        /// </summary>
+        public static Object CreateInstance<T>(T instance) where T : Object => instance;
 
         /// <summary>
         /// Calls the HandleInput(input) method on each object.

@@ -33,7 +33,8 @@ namespace SilverRaven.SFML.Tools
             return v + dif.Normalized() * maxDistance;
         }
         public static Vector2f ClampMagnitude(this Vector2f v) => v.Magnitude() > 1f ? v / v.Magnitude() : v;
-        public static Vector2f With(this Vector2f v, float? x, float? y) => new (x ?? v.X, y ?? v.Y);
+        public static Vector2f With(this Vector2f v, float? x = null, float? y = null) => new (x ?? v.X, y ?? v.Y);
+        public static Vector2f Lerp(this Vector2f v, Vector2f target, float t) => new (MathTools.Lerp(v.X, target.X, t), MathTools.Lerp(v.Y, target.Y, t));
     }
 
     public static class MathTools
