@@ -1,0 +1,3 @@
+During development of some university projects (Pong, BreakOut, SpaceInvaders) using the SFML.Net binding for c# i made some tools for working with the sfml classes. Some of the features are inspired by Unity's functionality.
+
+// TODO: will add an example / quickstart project with some instructions on how to use these tools
