@@ -1,0 +1,10 @@
+### DotnetCore ###
+# .NET Core build folders
+bin/
+obj/
+
+### VSCode ###
+.vscode/
+# solution files
+*.sln
+*.csproj
