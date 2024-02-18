@@ -1,4 +1,4 @@
-During development of various university projects (Pong, BreakOut, SpaceInvaders) using the SFML.Net binding and C#, i created some tools for working with the sfml classes.
+During development of university projects (Pong, BreakOut, SpaceInvaders) using the SFML.Net binding and C#, i created some tools for working with the sfml classes.
 Inspired by Unity's code structure, i developed a very basic game-engine.
 
 Installing sfml:
@@ -6,14 +6,14 @@ Installing sfml:
 2. In a terminal: `dotnet new console`
 2. followed by `dotnet add package sfml.net`
 3. wait for all files to be generated (especially the bin folder can take its while :P)
-4. Ctrl + Shift + P to open command pallete and run `.Net: Generate Assets for Build and Debug`
+4. Ctrl + Shift + P to open command pallete and run `.Net: Generate Assets for Build and Debug`  
 and done!
 
 Using the engine:
 1. Paste the `engine` folder into your project
 2. Change any settings by accessing the static class Engine.Settings
 3. Initialize all your Objects
-4. Call the `Engine.Start()` method. Note: this method contains the game-loop and will not exit until the window is closed.
+4. Call the `Engine.Start()` method. Note: this method contains the game-loop and will not exit until the window is closed.  
 Tada!
 
 To create a engine-handled object, simply inherit from the `GameObject` class. 
@@ -45,4 +45,5 @@ public class Player : GameObject
     protected override void HandleInput() => input = new Vector2f(Engine.INPUT.GetAxis("Horizontal"), -Engine.INPUT.GetAxis("Vertical")).ClampMagnitude();
     protected override void FixedUpdate() => Position += input * moveSpeed;
     protected override void Draw(RenderWindow window) => window.Draw(shape);
-}```
+}
+```
