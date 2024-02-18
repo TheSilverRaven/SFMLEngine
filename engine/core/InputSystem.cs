@@ -53,10 +53,15 @@ namespace SilverRaven.SFML.Tools
         private Dictionary<Keyboard.Key, KeyObserver> keyObservers;
         private Dictionary<Mouse.Button, MouseObserver> mouseObservers;
 
+        private Keyboard.Key? anyPressedKey;
+        private Keyboard.Key? anyReleasedKey;
+        private bool anyPressedKeyUpdate;
+        private bool anyReleasedKeyUpdate;
+
         /// <summary>
         /// The current mouse Position, relative to the current window. Updated in InputSystem.Update()
         /// </summary>
-        public Vector2i mousePosition;
+        public Vector2i MousePosition { get; private set; }
 
         public InputSystem()
         {
@@ -98,7 +103,50 @@ namespace SilverRaven.SFML.Tools
                 obs.Update();
             foreach (var obs in mouseObservers.Values)
                 obs.Update();
-            mousePosition = Mouse.GetPosition(window);
+            MousePosition = Mouse.GetPosition(window);
+
+            if (anyPressedKeyUpdate) anyPressedKey = null;
+            if (anyReleasedKeyUpdate) anyReleasedKey = null;
+            anyPressedKeyUpdate = true;
+            anyReleasedKeyUpdate = true;
+        }
+
+        /// <summary>
+        /// Returns a KeyCode of the Key that was pressed this frame
+        /// </summary>
+        /// <returns>KeyCode of the pressed Key, null if none was pressed</returns>
+        public bool GetAnyKeyDown(out Keyboard.Key? key)
+        {
+            key = anyPressedKey;
+            return anyPressedKey != null;
+        }
+
+        /// <summary>
+        /// Returns a KeyCode of the Key that was released this frame
+        /// </summary>
+        /// <returns>KeyCode of the released Key, null if none was released</returns>
+        public bool GetAnyKeyUp(out Keyboard.Key? key)
+        {
+            key = anyReleasedKey;
+            return anyReleasedKey != null;
+        }
+
+        /// <summary>
+        /// INTERNAL method for updating values for GetAnyKeyDown
+        /// </summary>
+        public void SignalAnyKeyPressed(Keyboard.Key key)
+        {
+            anyPressedKey = key;
+            anyPressedKeyUpdate = false;
+        }
+
+        /// <summary>
+        /// INTERNAL method for updating values for GetAnyKeyUp
+        /// </summary>
+        public void SignalAnyKeyReleased(Keyboard.Key key)
+        {
+            anyReleasedKey = key;
+            anyReleasedKeyUpdate = false;
         }
 
         /// <summary>
@@ -183,12 +231,7 @@ namespace SilverRaven.SFML.Tools
         public void DepleteInput(Keyboard.Key key)
         {
             keyObservers.TryGetValue(key, out KeyObserver obs);
-            if (obs == null)
-            {
-                obs = new KeyObserver(key);
-                keyObservers.Add(key, obs);
-                obs.Update();
-            }
+            if (obs == null) return;
             obs.Update();
         }
 
@@ -275,12 +318,7 @@ namespace SilverRaven.SFML.Tools
         public void DepleteInput(Mouse.Button button)
         {
             mouseObservers.TryGetValue(button, out MouseObserver obs);
-            if (obs == null)
-            {
-                obs = new MouseObserver(button);
-                mouseObservers.Add(button, obs);
-                obs.Update();
-            }
+            if (obs == null) return;
             obs.Update();
         }
     }
